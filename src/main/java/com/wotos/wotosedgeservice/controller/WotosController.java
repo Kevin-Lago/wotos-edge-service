@@ -1,52 +1,63 @@
 package com.wotos.wotosedgeservice.controller;
 
 import com.wotos.wotosedgeservice.service.WotosService;
-import com.wotos.wotosedgeservice.util.model.Player;
-import com.wotos.wotosedgeservice.util.model.PlayerStatisticsSnapshot;
-import com.wotos.wotosedgeservice.util.model.VehicleStatisticsSnapshot;
+import com.wotos.wotosedgeservice.util.model.WotPlayer;
+import com.wotos.wotosedgeservice.util.model.WotVehicle;
+import com.wotos.wotosedgeservice.util.model.statistics.PlayerStatisticsSnapshot;
+import com.wotos.wotosedgeservice.util.model.statistics.VehicleStatisticsSnapshot;
+import com.wotos.wotosedgeservice.validation.constraints.Language;
+import com.wotos.wotosedgeservice.validation.constraints.PlayerSearch;
+import com.wotos.wotosedgeservice.validation.constraints.VehicleType;
+import com.wotos.wotosedgeservice.viewmodel.FullPlayerDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Max;
 import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
 @CrossOrigin
+@Validated
 public class WotosController {
 
     @Autowired
     WotosService wotosService;
 
     @GetMapping("/player")
-    public ResponseEntity<Player> getPlayer(
-            @RequestParam("nickname") String nickname
+    public Map<Integer, FullPlayerDetails> getFullPlayerDetailsByAccountIds(
+            @RequestParam("accountIds") Integer[] accountIds
     ) {
-        return wotosService.getPlayerByNickname(nickname);
+        return wotosService.getFullPlayerDetailsByAccountIds(accountIds);
     }
 
     @GetMapping("/player/list")
-    public ResponseEntity<List<Player>> getPlayersByNickname(
-            @RequestParam("nickname") String nickname
+    @PlayerSearch
+    public List<WotPlayer> getPlayersByNickname(
+            @RequestParam(value = "nicknames") String[] nicknames,
+            @RequestParam(value = "language", required = false, defaultValue = "en") @Language String language,
+            @RequestParam(value = "limit", required = false) @Max(100) Integer limit,
+            @RequestParam(value = "searchType") String searchType
     ) {
-        return wotosService.getPlayersByNickname(nickname);
+        return wotosService.getPlayersByNickname(nicknames, language, limit, searchType);
     }
 
-    @GetMapping("/stats/players")
-    public ResponseEntity<Map<Integer, Map<String, List<PlayerStatisticsSnapshot>>>> getPlayerStatisticsSnapshotsByAccountIds(
-            @RequestParam("accountIds") List<Integer> accountIds
+    @GetMapping("/vehicles")
+    public Map<Integer, WotVehicle> getVehicles(
+            @RequestParam(value = "fields", required = false) String[] fields,
+            @RequestParam(value = "language", required = false, defaultValue = "en") @Language String language,
+            @RequestParam(value = "limit", required = false) Integer limit,
+            @RequestParam(value = "nations", required = false) String[] nations,
+            @RequestParam(value = "page", required = false) Integer pageNumber,
+            @RequestParam(value = "vehicleIds", required = false) Integer[] vehicleIds,
+            @RequestParam(value = "vehicleTiers", required = false) Integer[] vehicleTiers,
+            @RequestParam(value = "types", required = false) @VehicleType String[] vehicleTypes
     ) {
-        return wotosService.getPlayerStatisticsSnapshotsByAccountIds(accountIds);
-    }
-
-    @GetMapping("/stats/vehicles")
-    public ResponseEntity<Map<Integer, Map<Integer, Map<String, List<VehicleStatisticsSnapshot>>>>> getPlayerVehicleStatisticsSnapshotsByAccountIdsAndVehicleIds(
-            @RequestParam("accountIds") List<Integer> accountIds,
-            @RequestParam("vehiclesIds") List<Integer> vehicleIds
-    ) {
-        return wotosService.getPlayerVehicleStatisticsSnapshotsByAccountIdAndVehicleIds(accountIds, vehicleIds);
+        return wotosService.getVehicles(fields, language, limit, nations, pageNumber, vehicleIds, vehicleTiers, vehicleTypes);
     }
 
 }

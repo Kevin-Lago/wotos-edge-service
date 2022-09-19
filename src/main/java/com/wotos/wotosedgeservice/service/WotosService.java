@@ -2,13 +2,14 @@ package com.wotos.wotosedgeservice.service;
 
 import com.wotos.wotosedgeservice.util.feign.WotosPlayerFeignClient;
 import com.wotos.wotosedgeservice.util.feign.WotosStatisticsFeignClient;
-import com.wotos.wotosedgeservice.util.model.Player;
-import com.wotos.wotosedgeservice.util.model.PlayerStatisticsSnapshot;
-import com.wotos.wotosedgeservice.util.model.VehicleStatisticsSnapshot;
+import com.wotos.wotosedgeservice.util.model.WotPlayer;
+import com.wotos.wotosedgeservice.util.model.WotVehicle;
+import com.wotos.wotosedgeservice.util.model.statistics.PlayerStatisticsSnapshot;
+import com.wotos.wotosedgeservice.util.model.statistics.VehicleStatisticsSnapshot;
+import com.wotos.wotosedgeservice.viewmodel.FullPlayerDetails;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.xml.ws.Response;
 import java.util.List;
 import java.util.Map;
 
@@ -23,21 +24,24 @@ public class WotosService {
         this.wotosPlayerFeignClient = wotosPlayerFeignClient;
     }
 
-    public ResponseEntity<Player> getPlayerByNickname(String nickname) {
-        return wotosPlayerFeignClient.getPlayerByNickname(nickname);
+    public Map<Integer, FullPlayerDetails> getFullPlayerDetailsByAccountIds(
+            Integer[] accountIds
+    ) {
+        return null;
     }
 
-    public ResponseEntity<List<Player>> getPlayersByNickname(String nickname) {
-        return wotosPlayerFeignClient.getPlayersByNickname(nickname);
+    public List<WotPlayer> getPlayersByNickname(
+            String[] nicknames, String language, Integer limit, String searchType
+    ) {
+        return wotosPlayerFeignClient.getPlayersByNickname(nicknames, language, limit, searchType);
     }
 
-    public ResponseEntity<Map<Integer, Map<String, List<PlayerStatisticsSnapshot>>>> getPlayerStatisticsSnapshotsByAccountIds(List<Integer> accountIds) {
-        ResponseEntity<Map<Integer, Map<String, List<PlayerStatisticsSnapshot>>>> test = wotosStatisticsFeignClient.getPlayerStatistics(accountIds);
-        return test;
-    }
-
-    public ResponseEntity<Map<Integer, Map<Integer, Map<String, List<VehicleStatisticsSnapshot>>>>> getPlayerVehicleStatisticsSnapshotsByAccountIdAndVehicleIds(List<Integer> accountIds, List<Integer> vehicleIds) {
-        return wotosStatisticsFeignClient.getPlayerVehicleStatistics(accountIds, vehicleIds);
+    public Map<Integer, WotVehicle> getVehicles(
+            String[] fields, String language, Integer limit, String[] nations,
+            Integer pageNumber, Integer[] vehicleIds, Integer[] vehicleTiers,
+            String[] vehicleTypes
+    ) {
+        return null;
     }
 
 }
