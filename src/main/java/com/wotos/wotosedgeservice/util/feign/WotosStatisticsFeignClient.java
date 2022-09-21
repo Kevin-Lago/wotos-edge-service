@@ -15,13 +15,13 @@ public interface WotosStatisticsFeignClient {
 
     @GetMapping("/vehicles")
     ResponseEntity<Map<Integer, Map<Integer, Map<String, List<VehicleStatisticsSnapshot>>>>> getPlayerVehicleStatistics(
-            @RequestParam("accountIds") List<Integer> accountIds,
-            @RequestParam("tankIds") List<Integer> vehicleIds
+            @RequestParam(value = "accountIds") Integer[] accountIds,
+            @RequestParam(value = "tankIds", required = false) Integer[] vehicleIds
     );
 
     @GetMapping("/players")
     ResponseEntity<Map<Integer, Map<String, List<PlayerStatisticsSnapshot>>>> getPlayerStatistics(
-            @RequestParam("accountIds") List<Integer> accountIds
+            @RequestParam(value = "accountIds") Integer[] accountIds
     );
 
 }
