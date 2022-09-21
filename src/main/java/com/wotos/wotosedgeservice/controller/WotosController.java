@@ -28,14 +28,14 @@ public class WotosController {
     @Autowired
     WotosService wotosService;
 
-    @GetMapping("/player")
+    @GetMapping("/players")
     public Map<Integer, FullPlayerDetails> getFullPlayerDetailsByAccountIds(
             @RequestParam("accountIds") Integer[] accountIds
     ) {
         return wotosService.getFullPlayerDetailsByAccountIds(accountIds);
     }
 
-    @GetMapping("/player/list")
+    @GetMapping("/players/list")
     @PlayerSearch
     public List<WotPlayer> getPlayersByNickname(
             @RequestParam(value = "nicknames") String[] nicknames,
