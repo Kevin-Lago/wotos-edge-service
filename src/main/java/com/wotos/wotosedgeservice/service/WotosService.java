@@ -31,15 +31,15 @@ public class WotosService {
             Integer[] accountIds
     ) {
         Map<Integer, FullPlayerDetails> fullPlayerDetailsMap = new HashMap<>();
-        Map<Integer, Map<String, List<PlayerStatisticsSnapshot>>> playerStatisticsSnapshotsMap = wotosStatisticsFeignClient.getPlayerStatistics(accountIds).getBody();
-        Map<Integer, Map<Integer, Map<String, List<VehicleStatisticsSnapshot>>>> playerVehicleStatisticsSnapshotsMap = wotosStatisticsFeignClient.getPlayerVehicleStatistics(accountIds, null).getBody();
+//        Map<Integer, Map<String, List<PlayerStatisticsSnapshot>>> playerStatisticsSnapshotsMap = wotosStatisticsFeignClient.getPlayerStatisticsSnapshots(accountIds).getBody();
+//        Map<Integer, Map<Integer, Map<String, List<VehicleStatisticsSnapshot>>>> playerVehicleStatisticsSnapshotsMap = wotosStatisticsFeignClient.getPlayerVehicleStatisticsSnapshots(accountIds, null).getBody();
 
         for (Integer accountId : accountIds) {
             FullPlayerDetails fullPlayerDetails = new FullPlayerDetails();
 
 //            fullPlayerDetails.setPlayerDetails(wotosPlayerFeignClient.g);
-            fullPlayerDetails.setPlayerStatisticsSnapshots(playerStatisticsSnapshotsMap.get(accountId));
-            fullPlayerDetails.setVehicleStatisticsSnapshots(playerVehicleStatisticsSnapshotsMap.get(accountId));
+//            fullPlayerDetails.setPlayerStatisticsSnapshots(playerStatisticsSnapshotsMap.get(accountId));
+//            fullPlayerDetails.setVehicleStatisticsSnapshots(playerVehicleStatisticsSnapshotsMap.get(accountId));
 
             fullPlayerDetailsMap.put(accountId, fullPlayerDetails);
         }
@@ -50,7 +50,7 @@ public class WotosService {
     public List<WotPlayer> getPlayersByNickname(
             String[] nicknames, String language, Integer limit, String searchType
     ) {
-        return wotosPlayerFeignClient.getPlayersByNickname(nicknames, language, limit, searchType);
+        return wotosPlayerFeignClient.getPlayersByNickname(nicknames, language, limit, searchType).getBody();
     }
 
     public Map<Integer, WotVehicle> getVehicles(

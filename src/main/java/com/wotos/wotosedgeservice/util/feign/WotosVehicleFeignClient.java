@@ -5,11 +5,13 @@ import com.wotos.wotosedgeservice.validation.constraints.Language;
 import com.wotos.wotosedgeservice.validation.constraints.VehicleType;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Map;
 
-@FeignClient(name = "wotos-player-service", path = "/api/vehicles")
+@FeignClient(name = "wotos-player-service")
+@RequestMapping("/api/vehicles")
 public interface WotosVehicleFeignClient {
 
     @GetMapping
